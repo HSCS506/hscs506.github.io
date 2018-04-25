@@ -10,6 +10,7 @@ tags: [QEMU,源码分析]
 # QEMU Module Infrastructure
 相关的Maintainer是IBM的Anthony Liguori (aliguori@us.ibm.com)。
 
+## 源码分析
 定义了4种Module: BLOCK,OPTS,QOM,TRACE，其定义如下:
 {% highlight c linenos %}
 include/qemu/module.h
@@ -111,3 +112,9 @@ void register_module_init(void (*fn)(void), module_init_type type)
     QTAILQ_INSERT_TAIL(l, e, node);
 }
 {% endhighlight %}
+
+## 函数调用流
+这个代码对应的函数调用流为 ![函数调用流](/pictures/qemu-module-01.svg)
+
+## 数据结构
+这个代码对应的数据结构为 ![数据结构](/pictures/qemu-module-02.svg)

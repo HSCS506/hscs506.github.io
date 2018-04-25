@@ -7,7 +7,7 @@
     <title>maow</title>
     <link href="/feed/" rel="self" />
     <link href="http://hscs506.github.io/" />
-    <lastBuildDate>2018-04-25T16:15:28+08:00</lastBuildDate>
+    <lastBuildDate>2018-04-25T17:18:53+08:00</lastBuildDate>
     <webMaster>maow.cd@foxmail.com</webMaster>
     
     <item>
@@ -21,6 +21,7 @@
 <h1 id="qemu-module-infrastructure">QEMU Module Infrastructure</h1>
 <p>相关的Maintainer是IBM的Anthony Liguori (aliguori@us.ibm.com)。</p>
 
+<h2 id="源码分析">源码分析</h2>
 <p>定义了4种Module: BLOCK,OPTS,QOM,TRACE，其定义如下:</p>
 
 <figure class="highlight"><pre><code class="language-c" data-lang="c"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
@@ -197,6 +198,11 @@ that is used implicitly during the execution of the program.</p>
 <span class="p">}</span><span class="w">
 </span></pre></td></tr></tbody></table></code></pre></figure>
 
+<h2 id="函数调用流">函数调用流</h2>
+<p>这个代码对应的函数调用流为 <img src="/pictures/qemu-module-01.svg" alt="函数调用流" /></p>
+
+<h2 id="数据结构">数据结构</h2>
+<p>这个代码对应的数据结构为 <img src="/pictures/qemu-module-02.svg" alt="数据结构" /></p>
 ]]></content:encoded>
     </item>
     
