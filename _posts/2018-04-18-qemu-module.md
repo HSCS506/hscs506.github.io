@@ -8,7 +8,7 @@ tags: [QEMU,源码分析]
 本文主要分析QEMU的Module框架机制
 
 # QEMU Module Infrastructure
-相关的Maintainer是IBM的Anthony Liguori <aliguori@us.ibm.com>。
+相关的Maintainer是IBM的Anthony Liguori (aliguori@us.ibm.com)。
 
 定义了4种Module: BLOCK,OPTS,QOM,TRACE，其定义如下:
 {% highlight c linenos %}
