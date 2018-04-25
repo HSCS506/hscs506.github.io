@@ -80,7 +80,7 @@ blockquote p {
 }
 
 .content img {
-    max-width: 600px;
+    max-width: 800px;
     display: block;
     margin: 4px auto;
     -webkit-box-shadow: #999 1px 1px 4px;
