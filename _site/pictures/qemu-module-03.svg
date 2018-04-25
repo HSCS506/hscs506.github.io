@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="39cm" height="16cm" viewBox="360 -16 763 302" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="360.444" y="156">
+    <tspan x="360.444" y="156">init_type_list[4]</tspan>
+  </text>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="480.444" y="82.4338">
+    <tspan x="480.444" y="82.4338">BLOCK</tspan>
+  </text>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="480.444" y="131.1">
+    <tspan x="480.444" y="131.1">OPTS</tspan>
+  </text>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="480.444" y="179.767">
+    <tspan x="480.444" y="179.767">QOM</tspan>
+  </text>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="480.444" y="228.434">
+    <tspan x="480.444" y="228.434">TRACE</tspan>
+  </text>
+  <g>
+    <rect style="fill: #8b6914" x="526.444" y="56" width="68" height="48"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="526.444" y="56" width="68" height="48"/>
+  </g>
+  <g>
+    <rect style="fill: #ffc0cb" x="526.444" y="104" width="68" height="48"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="526.444" y="104" width="68" height="48"/>
+  </g>
+  <g>
+    <rect style="fill: #90ee90" x="526.444" y="152" width="68" height="48"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="526.444" y="152" width="68" height="48"/>
+  </g>
+  <g>
+    <rect style="fill: #add8e6" x="526.444" y="200" width="68" height="48"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="526.444" y="200" width="68" height="48"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="530.444" y="152" width="60" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="530.444" y="152" width="60" height="24"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="530.444" y="176" width="60" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="530.444" y="176" width="60" height="24"/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="534.444" y="168">
+    <tspan x="534.444" y="168">tqh_first</tspan>
+  </text>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="534.444" y="192">
+    <tspan x="534.444" y="192">tqh_last</tspan>
+  </text>
+  <g>
+    <rect style="fill: #90ee90" x="630.444" y="152" width="68" height="48"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="630.444" y="152" width="68" height="48"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="634.444" y="152" width="60" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="634.444" y="152" width="60" height="24"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="634.444" y="176" width="60" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="634.444" y="176" width="60" height="24"/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="636.516" y="168">
+    <tspan x="636.516" y="168">tqe_next</tspan>
+  </text>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="636.516" y="192">
+    <tspan x="636.516" y="192">tqe_prev</tspan>
+  </text>
+  <g>
+    <rect style="fill: #90ee90" x="630.444" y="200" width="68" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="630.444" y="200" width="68" height="24"/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="650.444" y="216">
+    <tspan x="650.444" y="216">type</tspan>
+  </text>
+  <g>
+    <rect style="fill: #90ee90" x="630.444" y="128" width="68" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="630.444" y="128" width="68" height="24"/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="650.444" y="144">
+    <tspan x="650.444" y="144">func</tspan>
+  </text>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #ffa500" d="M 590.444 164 C 618.444,164 602.444,152 624.602,152"/>
+    <polygon style="fill: #ffa500" points="629.102,152 623.102,155 624.602,152 623.102,149 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #ffa500" points="629.102,152 623.102,155 624.602,152 623.102,149 "/>
+  </g>
+  <g>
+    <rect style="fill: #90ee90" x="734.444" y="152" width="68" height="48"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="734.444" y="152" width="68" height="48"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="738.444" y="152" width="60" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="738.444" y="152" width="60" height="24"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="738.444" y="176" width="60" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="738.444" y="176" width="60" height="24"/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="740.516" y="168">
+    <tspan x="740.516" y="168">tqe_next</tspan>
+  </text>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="740.516" y="192">
+    <tspan x="740.516" y="192">tqe_prev</tspan>
+  </text>
+  <g>
+    <rect style="fill: #90ee90" x="734.444" y="200" width="68" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="734.444" y="200" width="68" height="24"/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="754.444" y="216">
+    <tspan x="754.444" y="216">type</tspan>
+  </text>
+  <g>
+    <rect style="fill: #90ee90" x="734.444" y="128" width="68" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="734.444" y="128" width="68" height="24"/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="754.444" y="144">
+    <tspan x="754.444" y="144">func</tspan>
+  </text>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #ffa500" d="M 694.444 164 C 722.444,164 706.444,152 728.602,152"/>
+    <polygon style="fill: #ffa500" points="733.102,152 727.102,155 728.602,152 727.102,149 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #ffa500" points="733.102,152 727.102,155 728.602,152 727.102,149 "/>
+  </g>
+  <g>
+    <rect style="fill: #90ee90" x="906.542" y="152" width="68" height="48"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="906.542" y="152" width="68" height="48"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="910.542" y="152" width="60" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="910.542" y="152" width="60" height="24"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="910.542" y="176" width="60" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="910.542" y="176" width="60" height="24"/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="912.614" y="168">
+    <tspan x="912.614" y="168">tqe_next</tspan>
+  </text>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="912.614" y="192">
+    <tspan x="912.614" y="192">tqe_prev</tspan>
+  </text>
+  <g>
+    <rect style="fill: #90ee90" x="906.542" y="200" width="68" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="906.542" y="200" width="68" height="24"/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="926.542" y="216">
+    <tspan x="926.542" y="216">type</tspan>
+  </text>
+  <g>
+    <rect style="fill: #90ee90" x="906.542" y="128" width="68" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="906.542" y="128" width="68" height="24"/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="926.542" y="144">
+    <tspan x="926.542" y="144">func</tspan>
+  </text>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #ffa500" d="M 866.542 164 C 894.542,164 878.542,152 900.7,152"/>
+    <polygon style="fill: #ffa500" points="905.2,152 899.2,155 900.7,152 899.2,149 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #ffa500" points="905.2,152 899.2,155 900.7,152 899.2,149 "/>
+  </g>
+  <g>
+    <rect style="fill: #90ee90" x="1010.54" y="152" width="68" height="48"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="1010.54" y="152" width="68" height="48"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="1014.54" y="152" width="60" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="1014.54" y="152" width="60" height="24"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="1014.54" y="176" width="60" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="1014.54" y="176" width="60" height="24"/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="1016.61" y="168">
+    <tspan x="1016.61" y="168">tqe_next</tspan>
+  </text>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="1016.61" y="192">
+    <tspan x="1016.61" y="192">tqe_prev</tspan>
+  </text>
+  <g>
+    <rect style="fill: #90ee90" x="1010.54" y="200" width="68" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="1010.54" y="200" width="68" height="24"/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="1030.54" y="216">
+    <tspan x="1030.54" y="216">type</tspan>
+  </text>
+  <g>
+    <rect style="fill: #90ee90" x="1010.54" y="128" width="68" height="24"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" x="1010.54" y="128" width="68" height="24"/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="1030.54" y="144">
+    <tspan x="1030.54" y="144">func</tspan>
+  </text>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #ffa500" d="M 970.542 164 C 998.542,164 982.542,152 1004.7,152"/>
+    <polygon style="fill: #ffa500" points="1009.2,152 1003.2,155 1004.7,152 1003.2,149 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #ffa500" points="1009.2,152 1003.2,155 1004.7,152 1003.2,149 "/>
+  </g>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #ffa500" d="M 798.444 164 C 826.444,164 810.444,152 832.602,152"/>
+    <polygon style="fill: #ffa500" points="837.102,152 831.102,155 832.602,152 831.102,149 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #ffa500" points="837.102,152 831.102,155 832.602,152 831.102,149 "/>
+  </g>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #ffa500" d="M 1074.54 164 C 1102.54,164 1083.8,151.823 1105.96,151.823"/>
+    <polygon style="fill: #ffa500" points="1110.46,151.823 1104.46,154.823 1105.96,151.823 1104.46,148.823 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #ffa500" points="1110.46,151.823 1104.46,154.823 1105.96,151.823 1104.46,148.823 "/>
+  </g>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #1e90ff" d="M 634.444 188 C 610.444,184 614.444,160 595.985,153.847"/>
+    <polygon style="fill: #1e90ff" points="591.716,152.424 598.357,151.476 595.985,153.847 596.46,157.168 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #1e90ff" points="591.716,152.424 598.357,151.476 595.985,153.847 596.46,157.168 "/>
+  </g>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #1e90ff" d="M 738.444 188 C 714.444,184 718.444,160 699.985,153.847"/>
+    <polygon style="fill: #1e90ff" points="695.716,152.424 702.357,151.476 699.985,153.847 700.46,157.168 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #1e90ff" points="695.716,152.424 702.357,151.476 699.985,153.847 700.46,157.168 "/>
+  </g>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #1e90ff" d="M 842.444 188 C 818.444,184 822.444,160 803.985,153.847"/>
+    <polygon style="fill: #1e90ff" points="799.716,152.424 806.357,151.476 803.985,153.847 804.46,157.168 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #1e90ff" points="799.716,152.424 806.357,151.476 803.985,153.847 804.46,157.168 "/>
+  </g>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #1e90ff" d="M 1014.54 188 C 990.542,184 994.542,160 976.083,153.847"/>
+    <polygon style="fill: #1e90ff" points="971.814,152.424 978.455,151.476 976.083,153.847 976.558,157.168 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #1e90ff" points="971.814,152.424 978.455,151.476 976.083,153.847 976.558,157.168 "/>
+  </g>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #1e90ff" d="M 910.542 188 C 886.542,184 890.444,160 871.985,153.847"/>
+    <polygon style="fill: #1e90ff" points="867.716,152.424 874.357,151.476 871.985,153.847 872.46,157.168 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #1e90ff" points="867.716,152.424 874.357,151.476 871.985,153.847 872.46,157.168 "/>
+  </g>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #ffc0cb" d="M 590.444 188 C 678.444,344 1214.44,296 1078.61,156.19"/>
+    <polygon style="fill: #ffc0cb" points="1075.48,152.962 1081.81,155.175 1078.61,156.19 1077.51,159.356 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1.2; stroke: #ffc0cb" points="1075.48,152.962 1081.81,155.175 1078.61,156.19 1077.51,159.356 "/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="847.65" y="162.217">
+    <tspan x="847.65" y="162.217">...</tspan>
+  </text>
+  <g>
+    <ellipse style="fill: #ffffff" cx="1117.42" cy="151.823" rx="5.61663" ry="5.61663"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" cx="1117.42" cy="151.823" rx="5.61663" ry="5.61663"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 0.08; stroke: #000000" cx="1117.42" cy="151.823" rx="5.61663" ry="5.61663"/>
+    <ellipse style="fill: #ffffff" cx="1117.42" cy="151.823" rx="4.81425" ry="4.81425"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" cx="1117.42" cy="151.823" rx="4.81425" ry="4.81425"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 0.08; stroke: #000000" cx="1117.42" cy="151.823" rx="4.81425" ry="4.81425"/>
+    <polygon style="fill: #000000" points="1114.21,149.416 1116.62,151.823 1114.21,154.23 1115.01,155.033 1117.42,152.625 1119.83,155.033 1120.63,154.23 1118.22,151.823 1120.63,149.416 1119.83,148.614 1117.42,151.021 1115.01,148.614 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 0.8; stroke: #000000" points="1114.21,149.416 1116.62,151.823 1114.21,154.23 1115.01,155.033 1117.42,152.625 1119.83,155.033 1120.63,154.23 1118.22,151.823 1120.63,149.416 1119.83,148.614 1117.42,151.021 1115.01,148.614 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 0.08; stroke: #000000" points="1114.21,149.416 1116.62,151.823 1114.21,154.23 1115.01,155.033 1117.42,152.625 1119.83,155.033 1120.63,154.23 1118.22,151.823 1120.63,149.416 1119.83,148.614 1117.42,151.021 1115.01,148.614 "/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="583.206" y="35.964">
+    <tspan x="583.206" y="35.964"></tspan>
+  </text>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="621.046" y="-3.55798">
+    <tspan x="621.046" y="-3.55798">type_init(func)</tspan>
+    <tspan x="621.046" y="12.442">  =&gt; module_init(func, QOM)</tspan>
+    <tspan x="621.046" y="28.442">         =&gt; do_qemu_init##func()                             OS在main()之前调用</tspan>
+    <tspan x="621.046" y="44.442">                =&gt; register_module_init(func, QOM)</tspan>
+    <tspan x="621.046" y="60.442">                       =&gt; e = g_malloc0(ModuleEntry)      分配一个节点</tspan>
+    <tspan x="621.046" y="76.442">                       =&gt; e-&gt;init = func, e-&gt;type = QOM  初始化节点</tspan>
+    <tspan x="621.046" y="92.442">                       =&gt; l = find_type(type)                      查找队列头</tspan>
+    <tspan x="621.046" y="108.442">                       =&gt; QTAILQ_INSERT_TAIL(l, e, node)  把节点插入到队尾</tspan>
+  </text>
+</svg>
