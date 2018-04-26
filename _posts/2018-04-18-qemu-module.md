@@ -250,6 +250,7 @@ TypeImpl *type_register_static(const TypeInfo *info)
 }
 {% endhighlight %}
 
+module_call_init()函数
 {% highlight c linenos %}
 util/module.c
 
@@ -264,6 +265,66 @@ void module_call_init(module_init_type type)
         e->init();
     }
 }
+{% endhighlight %}
+
+TypeInfo数据结构
+{% highlight c linenos %}
+include/qom/object.h
+
+struct TypeInfo
+{
+    const char *name;
+    const char *parent;
+
+    size_t instance_size;
+    void (*instance_init)(Object *obj);
+    void (*instance_post_init)(Object *obj);
+    void (*instance_finalize)(Object *obj);
+
+    bool abstract;
+    size_t class_size;
+
+    void (*class_init)(ObjectClass *klass, void *data);
+    void (*class_base_init)(ObjectClass *klass, void *data);
+    void (*class_finalize)(ObjectClass *klass, void *data);
+    void *class_data;
+
+    InterfaceInfo *interfaces;
+};
+{% endhighlight %}
+
+TypeImpl数据结构
+{% highlight c linenos %}
+qom/object.c
+
+struct TypeImpl
+{
+    const char *name;
+
+    size_t class_size;
+
+    size_t instance_size;
+
+    void (*class_init)(ObjectClass *klass, void *data);
+    void (*class_base_init)(ObjectClass *klass, void *data);
+    void (*class_finalize)(ObjectClass *klass, void *data);
+
+    void *class_data;
+
+    void (*instance_init)(Object *obj);
+    void (*instance_post_init)(Object *obj);
+    void (*instance_finalize)(Object *obj);
+
+    bool abstract;
+
+    const char *parent;
+    TypeImpl *parent_type;
+
+    ObjectClass *class;
+
+    int num_interfaces;
+    InterfaceImpl interfaces[MAX_INTERFACES];
+};
 {% endhighlight %}
 
 ### type_register_static()源码分析
@@ -289,5 +350,37 @@ module_call_init(MODULE_INIT_OPTS);
 而每个Type注册函数调用type_register_static()来完成TypeInfo到TypeImpl的转换：
  ![函数调用流](/pictures/qemu-module-04.svg)
 
-而为什么要采用TypeImpl，可能是为了速度而采用的Hash：
+而已经有了TypeInfo，为什么还要用TypeImpl，可能是为了速度(各个TypeInfo单独存在，
+而TypeImpl是采用的Hash组织起来的)：
 ![数据结构](/pictures/qemu-module-05.svg)
+
+### TypeImpl的操作
+{% highlight c linenos %}
+qom/object.c
+
+static GHashTable *type_table_get(void)
+{
+    static GHashTable *type_table;
+
+    if (type_table == NULL) {
+        type_table = g_hash_table_new(g_str_hash, g_str_equal);
+    }
+
+    return type_table;
+}
+
+static bool enumerating_types;
+
+static void type_table_add(TypeImpl *ti)
+{
+    assert(!enumerating_types);
+    g_hash_table_insert(type_table_get(), (void *)ti->name, ti);
+}
+
+static TypeImpl *type_table_lookup(const char *name)
+{
+    return g_hash_table_lookup(type_table_get(), name);
+}
+{% endhighlight %}
+
+即TypeImpl采用的关键字为对象名字与对象之间建立Hash关系。

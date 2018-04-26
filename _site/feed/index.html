@@ -7,7 +7,7 @@
     <title>maow</title>
     <link href="/feed/" rel="self" />
     <link href="http://hscs506.github.io/" />
-    <lastBuildDate>2018-04-26T00:41:11+08:00</lastBuildDate>
+    <lastBuildDate>2018-04-26T09:41:46+08:00</lastBuildDate>
     <webMaster>maow.cd@foxmail.com</webMaster>
     
     <item>
@@ -435,6 +435,8 @@ that is used implicitly during the execution of the program.</p>
 <span class="p">}</span><span class="w">
 </span></pre></td></tr></tbody></table></code></pre></figure>
 
+<p>module_call_init()函数</p>
+
 <figure class="highlight"><pre><code class="language-c" data-lang="c"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
 2
 3
@@ -460,6 +462,116 @@ that is used implicitly during the execution of the program.</p>
         <span class="n">e</span><span class="o">-&gt;</span><span class="n">init</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>TypeInfo数据结构</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22</pre></td><td class="code"><pre><span class="n">include</span><span class="o">/</span><span class="n">qom</span><span class="o">/</span><span class="n">object</span><span class="p">.</span><span class="n">h</span>
+
+<span class="k">struct</span> <span class="n">TypeInfo</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">parent</span><span class="p">;</span>
+
+    <span class="kt">size_t</span> <span class="n">instance_size</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">instance_init</span><span class="p">)(</span><span class="n">Object</span> <span class="o">*</span><span class="n">obj</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">instance_post_init</span><span class="p">)(</span><span class="n">Object</span> <span class="o">*</span><span class="n">obj</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">instance_finalize</span><span class="p">)(</span><span class="n">Object</span> <span class="o">*</span><span class="n">obj</span><span class="p">);</span>
+
+    <span class="n">bool</span> <span class="n">abstract</span><span class="p">;</span>
+    <span class="kt">size_t</span> <span class="n">class_size</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">class_init</span><span class="p">)(</span><span class="n">ObjectClass</span> <span class="o">*</span><span class="n">klass</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">class_base_init</span><span class="p">)(</span><span class="n">ObjectClass</span> <span class="o">*</span><span class="n">klass</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">class_finalize</span><span class="p">)(</span><span class="n">ObjectClass</span> <span class="o">*</span><span class="n">klass</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="o">*</span><span class="n">class_data</span><span class="p">;</span>
+
+    <span class="n">InterfaceInfo</span> <span class="o">*</span><span class="n">interfaces</span><span class="p">;</span>
+<span class="p">};</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>TypeImpl数据结构</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30</pre></td><td class="code"><pre><span class="n">qom</span><span class="o">/</span><span class="n">object</span><span class="p">.</span><span class="n">c</span>
+
+<span class="k">struct</span> <span class="n">TypeImpl</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+
+    <span class="kt">size_t</span> <span class="n">class_size</span><span class="p">;</span>
+
+    <span class="kt">size_t</span> <span class="n">instance_size</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">class_init</span><span class="p">)(</span><span class="n">ObjectClass</span> <span class="o">*</span><span class="n">klass</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">class_base_init</span><span class="p">)(</span><span class="n">ObjectClass</span> <span class="o">*</span><span class="n">klass</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">class_finalize</span><span class="p">)(</span><span class="n">ObjectClass</span> <span class="o">*</span><span class="n">klass</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="o">*</span><span class="n">class_data</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">instance_init</span><span class="p">)(</span><span class="n">Object</span> <span class="o">*</span><span class="n">obj</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">instance_post_init</span><span class="p">)(</span><span class="n">Object</span> <span class="o">*</span><span class="n">obj</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">instance_finalize</span><span class="p">)(</span><span class="n">Object</span> <span class="o">*</span><span class="n">obj</span><span class="p">);</span>
+
+    <span class="n">bool</span> <span class="n">abstract</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">parent</span><span class="p">;</span>
+    <span class="n">TypeImpl</span> <span class="o">*</span><span class="n">parent_type</span><span class="p">;</span>
+
+    <span class="n">ObjectClass</span> <span class="o">*</span><span class="n">class</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">num_interfaces</span><span class="p">;</span>
+    <span class="n">InterfaceImpl</span> <span class="n">interfaces</span><span class="p">[</span><span class="n">MAX_INTERFACES</span><span class="p">];</span>
+<span class="p">};</span><span class="w">
 </span></pre></td></tr></tbody></table></code></pre></figure>
 
 <h3 id="type_register_static源码分析">type_register_static()源码分析</h3>
@@ -493,8 +605,64 @@ that is used implicitly during the execution of the program.</p>
 而每个Type注册函数调用type_register_static()来完成TypeInfo到TypeImpl的转换：
  <img src="/pictures/qemu-module-04.svg" alt="函数调用流" /></p>
 
-<p>而为什么要采用TypeImpl，可能是为了速度而采用的Hash：
+<p>而已经有了TypeInfo，为什么还要用TypeImpl，可能是为了速度(各个TypeInfo单独存在，
+而TypeImpl是采用的Hash组织起来的)：
 <img src="/pictures/qemu-module-05.svg" alt="数据结构" /></p>
+
+<h3 id="typeimpl的操作">TypeImpl的操作</h3>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</pre></td><td class="code"><pre><span class="n">qom</span><span class="o">/</span><span class="n">object</span><span class="p">.</span><span class="n">c</span>
+
+<span class="k">static</span> <span class="n">GHashTable</span> <span class="o">*</span><span class="n">type_table_get</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="n">GHashTable</span> <span class="o">*</span><span class="n">type_table</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">type_table</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">type_table</span> <span class="o">=</span> <span class="n">g_hash_table_new</span><span class="p">(</span><span class="n">g_str_hash</span><span class="p">,</span> <span class="n">g_str_equal</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">type_table</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">bool</span> <span class="n">enumerating_types</span><span class="p">;</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">type_table_add</span><span class="p">(</span><span class="n">TypeImpl</span> <span class="o">*</span><span class="n">ti</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">enumerating_types</span><span class="p">);</span>
+    <span class="n">g_hash_table_insert</span><span class="p">(</span><span class="n">type_table_get</span><span class="p">(),</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">ti</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span> <span class="n">ti</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">TypeImpl</span> <span class="o">*</span><span class="nf">type_table_lookup</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">g_hash_table_lookup</span><span class="p">(</span><span class="n">type_table_get</span><span class="p">(),</span> <span class="n">name</span><span class="p">);</span>
+<span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>即TypeImpl采用的关键字为对象名字与对象之间建立Hash关系。</p>
 ]]></content:encoded>
     </item>
     
