@@ -66,7 +66,7 @@ static void vmc_class_init(ObjectClass *oc, void *data)
     mc->desc               = "VMC PowerPC 755";
     mc->init               = ppc_vmc_init;
     mc->block_default_type = IF_PFLASH;
-    mc->max_cpus           = MAX_CPUS;
+    mc->max_cpus           = 1;
     mc->default_boot_order = "cd";
     mc->kvm_type           = heathrow_kvm_type;
     mc->default_cpu_type   = POWERPC_CPU_TYPE_NAME("755_v2.8");
@@ -84,6 +84,24 @@ static void ppc_vmc_register_types(void)
 }
 
 type_init(ppc_vmc_register_types);
+{% endhighlight %}
+
+添加了这些代码，编译后在查看Machine
+{% highlight shell linenos %}
+$ qemu-system-ppc -machine help
+Supported machines are:
+40p                  IBM RS/6000 7020 (40p)
+VMC                  VMC PowerPC 755
+bamboo               bamboo
+g3beige              Heathrow based PowerMAC (default)
+mac99                Mac99 based PowerMAC
+mpc8544ds            mpc8544ds
+none                 empty machine
+ppce500              generic paravirt e500 platform
+prep                 PowerPC PREP platform
+ref405ep             ref405ep
+taihu                taihu
+virtex-ml507         Xilinx Virtex ML507 reference design
 {% endhighlight %}
 
 MachineClass结构体定义：
@@ -167,413 +185,234 @@ typedef enum {
 ### 查看默认的CPU
 {% highlight shell linenos %}
 $ qemu-system-ppc -cpu help
-PowerPC 601_v1           PVR 00010001
-PowerPC 601_v0           PVR 00010001
-PowerPC 601_v2           PVR 00010002
-PowerPC 601              (alias for 601_v2)
-PowerPC 601v             (alias for 601_v2)
-PowerPC 603              PVR 00030100
-PowerPC mpc8240          (alias for 603)
-PowerPC vanilla          (alias for 603)
-PowerPC 604              PVR 00040103
-PowerPC ppc32            (alias for 604)
-PowerPC ppc              (alias for 604)
-PowerPC default          (alias for 604)
-PowerPC 602              PVR 00050100
-PowerPC 603e_v1.1        PVR 00060101
-PowerPC 603e_v1.2        PVR 00060102
-PowerPC 603e_v1.3        PVR 00060103
-PowerPC 603e_v1.4        PVR 00060104
-PowerPC 603e_v2.2        PVR 00060202
-PowerPC 603e_v3          PVR 00060300
-PowerPC 603e_v4          PVR 00060400
-PowerPC 603e_v4.1        PVR 00060401
-PowerPC 603e             (alias for 603e_v4.1)
-PowerPC stretch          (alias for 603e_v4.1)
-PowerPC 603p             PVR 00070000
-PowerPC 603e7v           PVR 00070100
-PowerPC vaillant         (alias for 603e7v)
-PowerPC 603e7v1          PVR 00070101
-PowerPC 603e7            PVR 00070200
-PowerPC 603e7v2          PVR 00070201
-PowerPC 603e7t           PVR 00071201
-PowerPC 603r             (alias for 603e7t)
-PowerPC goldeneye        (alias for 603e7t)
-PowerPC 750_v1.0         PVR 00080100
-PowerPC 740_v1.0         PVR 00080100
-PowerPC 740e             PVR 00080100
-PowerPC 750e             PVR 00080200
-PowerPC 750_v2.0         PVR 00080200
-PowerPC 740_v2.0         PVR 00080200
-PowerPC 750_v2.1         PVR 00080201
-PowerPC 740_v2.1         PVR 00080201
-PowerPC 740_v2.2         PVR 00080202
-PowerPC 750_v2.2         PVR 00080202
-PowerPC 750_v3.0         PVR 00080300
-PowerPC 740_v3.0         PVR 00080300
-PowerPC 750_v3.1         PVR 00080301
-PowerPC 750              (alias for 750_v3.1)
-PowerPC typhoon          (alias for 750_v3.1)
-PowerPC g3               (alias for 750_v3.1)
-PowerPC 740_v3.1         PVR 00080301
-PowerPC 740              (alias for 740_v3.1)
-PowerPC arthur           (alias for 740_v3.1)
-PowerPC 750cx_v1.0       PVR 00082100
-PowerPC 750cx_v2.0       PVR 00082200
-PowerPC 750cx_v2.1       PVR 00082201
-PowerPC 750cx_v2.2       PVR 00082202
-PowerPC 750cx            (alias for 750cx_v2.2)
-PowerPC 750cxe_v2.1      PVR 00082211
-PowerPC 750cxe_v2.2      PVR 00082212
-PowerPC 750cxe_v2.3      PVR 00082213
-PowerPC 750cxe_v2.4      PVR 00082214
-PowerPC 750cxe_v3.0      PVR 00082310
-PowerPC 750cxe_v3.1      PVR 00082311
-PowerPC 755_v1.0         PVR 00083100
-PowerPC 745_v1.0         PVR 00083100
-PowerPC 755_v1.1         PVR 00083101
-PowerPC 745_v1.1         PVR 00083101
-PowerPC 755_v2.0         PVR 00083200
-PowerPC 745_v2.0         PVR 00083200
-PowerPC 755_v2.1         PVR 00083201
-PowerPC 745_v2.1         PVR 00083201
-PowerPC 745_v2.2         PVR 00083202
-PowerPC 755_v2.2         PVR 00083202
-PowerPC 755_v2.3         PVR 00083203
-PowerPC 745_v2.3         PVR 00083203
-PowerPC 755_v2.4         PVR 00083204
-PowerPC 745_v2.4         PVR 00083204
-PowerPC 745_v2.5         PVR 00083205
-PowerPC 755_v2.5         PVR 00083205
-PowerPC 755_v2.6         PVR 00083206
-PowerPC 745_v2.6         PVR 00083206
-PowerPC 755_v2.7         PVR 00083207
-PowerPC 745_v2.7         PVR 00083207
-PowerPC 745_v2.8         PVR 00083208
-PowerPC 745              (alias for 745_v2.8)
+...
 PowerPC 755_v2.8         PVR 00083208
 PowerPC 755              (alias for 755_v2.8)
-PowerPC goldfinger       (alias for 755_v2.8)
-PowerPC 750cxe_v2.4b     PVR 00083214
-PowerPC 750cxe_v3.1b     PVR 00083311
-PowerPC 750cxe           (alias for 750cxe_v3.1b)
-PowerPC 750cxr           PVR 00083410
-PowerPC 750cl_v1.0       PVR 00087200
-PowerPC 750cl_v2.0       PVR 00087210
-PowerPC 750cl            (alias for 750cl_v2.0)
-PowerPC 750l_v2.0        PVR 00088200
-PowerPC 750l_v2.1        PVR 00088201
-PowerPC 750l_v2.2        PVR 00088202
-PowerPC 750l_v3.0        PVR 00088300
-PowerPC 750l_v3.2        PVR 00088302
-PowerPC 750l             (alias for 750l_v3.2)
-PowerPC lonestar         (alias for 750l_v3.2)
-PowerPC 604e_v1.0        PVR 00090100
-PowerPC 604e_v2.2        PVR 00090202
-PowerPC 604e_v2.4        PVR 00090204
-PowerPC 604e             (alias for 604e_v2.4)
-PowerPC sirocco          (alias for 604e_v2.4)
-PowerPC 604r             PVR 000a0101
-PowerPC mach5            (alias for 604r)
-PowerPC 7400_v1.0        PVR 000c0100
-PowerPC 7400_v1.1        PVR 000c0101
-PowerPC 7400_v2.0        PVR 000c0200
-PowerPC 7400_v2.1        PVR 000c0201
-PowerPC 7400_v2.2        PVR 000c0202
-PowerPC 7400_v2.6        PVR 000c0206
-PowerPC 7400_v2.7        PVR 000c0207
-PowerPC 7400_v2.8        PVR 000c0208
-PowerPC 7400_v2.9        PVR 000c0209
-PowerPC 7400             (alias for 7400_v2.9)
-PowerPC max              (alias for 7400_v2.9)
-PowerPC g4               (alias for 7400_v2.9)
-PowerPC 403ga            PVR 00200011
-PowerPC 403gb            PVR 00200100
-PowerPC 403gc            PVR 00200200
-PowerPC 403              (alias for 403gc)
-PowerPC 403gcx           PVR 00201400
-PowerPC 401a1            PVR 00210000
-PowerPC 401b2            PVR 00220000
-PowerPC iop480           PVR 00220000
-PowerPC 401c2            PVR 00230000
-PowerPC 401d2            PVR 00240000
-PowerPC 401e2            PVR 00250000
-PowerPC 401f2            PVR 00260000
-PowerPC 401g2            PVR 00270000
-PowerPC 401              PVR 00270000
-PowerPC g2               PVR 00810011
-PowerPC mpc603           PVR 00810100
-PowerPC g2hip3           PVR 00810101
-PowerPC mpc8250_hip3     (alias for g2hip3)
-PowerPC mpc8255_hip3     (alias for g2hip3)
-PowerPC mpc8260_hip3     (alias for g2hip3)
-PowerPC mpc8264_hip3     (alias for g2hip3)
-PowerPC mpc8265_hip3     (alias for g2hip3)
-PowerPC mpc8266_hip3     (alias for g2hip3)
-PowerPC mpc8349a         PVR 00830010
-PowerPC mpc8347ap        PVR 00830010
-PowerPC mpc8347eap       PVR 00830010
-PowerPC mpc8347p         PVR 00830010
-PowerPC mpc8349          PVR 00830010
-PowerPC mpc8343e         PVR 00830010
-PowerPC mpc8343ea        PVR 00830010
-PowerPC mpc8343          PVR 00830010
-PowerPC mpc8347et        PVR 00830010
-PowerPC mpc8347e         (alias for mpc8347et)
-PowerPC mpc8349e         PVR 00830010
-PowerPC mpc8347at        PVR 00830010
-PowerPC mpc8347a         (alias for mpc8347at)
-PowerPC mpc8349ea        PVR 00830010
-PowerPC mpc8347eat       PVR 00830010
-PowerPC mpc8347ea        (alias for mpc8347eat)
-PowerPC mpc8343a         PVR 00830010
-PowerPC mpc8347t         PVR 00830010
-PowerPC mpc8347          (alias for mpc8347t)
-PowerPC mpc8347ep        PVR 00830010
-PowerPC e300c1           PVR 00830010
-PowerPC e300c2           PVR 00840010
-PowerPC e300c3           PVR 00850010
-PowerPC e300             (alias for e300c3)
-PowerPC mpc8379          PVR 00860010
-PowerPC mpc8378e         PVR 00860010
-PowerPC mpc8379e         PVR 00860010
-PowerPC mpc8378          PVR 00860010
-PowerPC mpc8377          PVR 00860010
-PowerPC e300c4           PVR 00860010
-PowerPC mpc8377e         PVR 00860010
-PowerPC 750p             PVR 10080000
-PowerPC conan/doyle      (alias for 750p)
-PowerPC 740p             PVR 10080000
-PowerPC cobra            PVR 10100000
-PowerPC 460exb           PVR 130218a4
-PowerPC 460ex            (alias for 460exb)
-PowerPC 440epx           PVR 200008d0
-PowerPC 405d2            PVR 20010000
-PowerPC x2vp4            PVR 20010820
-PowerPC x2vp7            (alias for x2vp4)
-PowerPC x2vp20           PVR 20010860
-PowerPC x2vp50           (alias for x2vp20)
-PowerPC 405gpa           PVR 40110000
-PowerPC 405gpb           PVR 40110040
-PowerPC 405cra           PVR 40110041
-PowerPC 405gpc           PVR 40110082
-PowerPC 405gpd           PVR 401100c4
-PowerPC 405gp            (alias for 405gpd)
-PowerPC 405crb           PVR 401100c5
-PowerPC 405crc           PVR 40110145
-PowerPC 405cr            (alias for 405crc)
-PowerPC 405gpe           (alias for 405crc)
-PowerPC stb03            PVR 40310000
-PowerPC npe4gs3          PVR 40b10000
-PowerPC npe405h          PVR 414100c0
-PowerPC npe405h2         PVR 41410140
-PowerPC 405ez            PVR 41511460
-PowerPC npe405l          PVR 416100c0
-PowerPC 405d4            PVR 41810000
-PowerPC 405              (alias for 405d4)
-PowerPC stb04            PVR 41810000
-PowerPC 405lp            PVR 41f10000
-PowerPC 440epa           PVR 42221850
-PowerPC 440epb           PVR 422218d3
-PowerPC 440ep            (alias for 440epb)
-PowerPC 405gpr           PVR 50910951
-PowerPC 405ep            PVR 51210950
-PowerPC stb25            PVR 51510950
-PowerPC 750fx_v1.0       PVR 70000100
-PowerPC 750fx_v2.0       PVR 70000200
-PowerPC 750fx_v2.1       PVR 70000201
-PowerPC 750fx_v2.2       PVR 70000202
-PowerPC 750fl            PVR 70000203
-PowerPC 750fx_v2.3       PVR 70000203
-PowerPC 750fx            (alias for 750fx_v2.3)
-PowerPC 750gx_v1.0       PVR 70020100
-PowerPC 750gx_v1.1       PVR 70020101
-PowerPC 750gx_v1.2       PVR 70020102
-PowerPC 750gx            (alias for 750gx_v1.2)
-PowerPC 750gl            PVR 70020102
-PowerPC 440-xilinx       PVR 7ff21910
-PowerPC 440-xilinx-w-dfpu PVR 7ff21910
-PowerPC 7450_v1.0        PVR 80000100
-PowerPC 7450_v1.1        PVR 80000101
-PowerPC 7450_v1.2        PVR 80000102
-PowerPC 7450_v2.0        PVR 80000200
-PowerPC 7450_v2.1        PVR 80000201
-PowerPC 7450             (alias for 7450_v2.1)
-PowerPC vger             (alias for 7450_v2.1)
-PowerPC 7441_v2.1        PVR 80000201
-PowerPC 7441_v2.3        PVR 80000203
-PowerPC 7441             (alias for 7441_v2.3)
-PowerPC 7451_v2.3        PVR 80000203
-PowerPC 7451             (alias for 7451_v2.3)
-PowerPC 7451_v2.10       PVR 80000210
-PowerPC 7441_v2.10       PVR 80000210
-PowerPC 7455_v1.0        PVR 80010100
-PowerPC 7445_v1.0        PVR 80010100
-PowerPC 7445_v2.1        PVR 80010201
-PowerPC 7455_v2.1        PVR 80010201
-PowerPC 7445_v3.2        PVR 80010302
-PowerPC 7445             (alias for 7445_v3.2)
-PowerPC 7455_v3.2        PVR 80010302
-PowerPC 7455             (alias for 7455_v3.2)
-PowerPC apollo6          (alias for 7455_v3.2)
-PowerPC 7455_v3.3        PVR 80010303
-PowerPC 7445_v3.3        PVR 80010303
-PowerPC 7455_v3.4        PVR 80010304
-PowerPC 7445_v3.4        PVR 80010304
-PowerPC 7447_v1.0        PVR 80020100
-PowerPC 7457_v1.0        PVR 80020100
-PowerPC 7457_v1.1        PVR 80020101
-PowerPC 7447_v1.1        PVR 80020101
-PowerPC 7447             (alias for 7447_v1.1)
-PowerPC 7457_v1.2        PVR 80020102
-PowerPC 7457             (alias for 7457_v1.2)
-PowerPC apollo7          (alias for 7457_v1.2)
-PowerPC 7457a_v1.0       PVR 80030100
-PowerPC apollo7pm        (alias for 7457a_v1.0)
-PowerPC 7447a_v1.0       PVR 80030100
-PowerPC 7447a_v1.1       PVR 80030101
-PowerPC 7457a_v1.1       PVR 80030101
-PowerPC 7447a_v1.2       PVR 80030102
-PowerPC 7447a            (alias for 7447a_v1.2)
-PowerPC 7457a_v1.2       PVR 80030102
-PowerPC 7457a            (alias for 7457a_v1.2)
-PowerPC e600             PVR 80040010
-PowerPC mpc8610          PVR 80040010
-PowerPC mpc8641d         PVR 80040010
-PowerPC mpc8641          PVR 80040010
-PowerPC 7448_v1.0        PVR 80040100
-PowerPC 7448_v1.1        PVR 80040101
-PowerPC 7448_v2.0        PVR 80040200
-PowerPC 7448_v2.1        PVR 80040201
-PowerPC 7448             (alias for 7448_v2.1)
-PowerPC 7410_v1.0        PVR 800c1100
-PowerPC 7410_v1.1        PVR 800c1101
-PowerPC 7410_v1.2        PVR 800c1102
-PowerPC 7410_v1.3        PVR 800c1103
-PowerPC 7410_v1.4        PVR 800c1104
-PowerPC 7410             (alias for 7410_v1.4)
-PowerPC nitro            (alias for 7410_v1.4)
-PowerPC e500_v10         PVR 80200010
-PowerPC mpc8540_v10      PVR 80200010
-PowerPC mpc8540_v21      PVR 80200020
-PowerPC mpc8540          (alias for mpc8540_v21)
-PowerPC e500_v20         PVR 80200020
-PowerPC e500v1           (alias for e500_v20)
-PowerPC mpc8541_v10      PVR 80200020
-PowerPC mpc8541e_v11     PVR 80200020
-PowerPC mpc8541e         (alias for mpc8541e_v11)
-PowerPC mpc8540_v20      PVR 80200020
-PowerPC mpc8541e_v10     PVR 80200020
-PowerPC mpc8541_v11      PVR 80200020
-PowerPC mpc8541          (alias for mpc8541_v11)
-PowerPC mpc8555_v10      PVR 80210010
-PowerPC mpc8548_v10      PVR 80210010
-PowerPC mpc8543_v10      PVR 80210010
-PowerPC mpc8543e_v10     PVR 80210010
-PowerPC mpc8548e_v10     PVR 80210010
-PowerPC mpc8555e_v10     PVR 80210010
-PowerPC e500v2_v10       PVR 80210010
-PowerPC mpc8560_v10      PVR 80210010
-PowerPC mpc8543e_v11     PVR 80210011
-PowerPC mpc8548e_v11     PVR 80210011
-PowerPC mpc8555e_v11     PVR 80210011
-PowerPC mpc8555e         (alias for mpc8555e_v11)
-PowerPC mpc8555_v11      PVR 80210011
-PowerPC mpc8555          (alias for mpc8555_v11)
-PowerPC mpc8548_v11      PVR 80210011
-PowerPC mpc8543_v11      PVR 80210011
-PowerPC mpc8547e_v20     PVR 80210020
-PowerPC e500v2_v20       PVR 80210020
-PowerPC mpc8560_v20      PVR 80210020
-PowerPC mpc8545e_v20     PVR 80210020
-PowerPC mpc8545_v20      PVR 80210020
-PowerPC mpc8548_v20      PVR 80210020
-PowerPC mpc8543_v20      PVR 80210020
-PowerPC mpc8543e_v20     PVR 80210020
-PowerPC mpc8548e_v20     PVR 80210020
-PowerPC mpc8545_v21      PVR 80210021
-PowerPC mpc8545          (alias for mpc8545_v21)
-PowerPC mpc8548_v21      PVR 80210021
-PowerPC mpc8548          (alias for mpc8548_v21)
-PowerPC mpc8543_v21      PVR 80210021
-PowerPC mpc8543          (alias for mpc8543_v21)
-PowerPC mpc8544_v10      PVR 80210021
-PowerPC mpc8543e_v21     PVR 80210021
-PowerPC mpc8543e         (alias for mpc8543e_v21)
-PowerPC mpc8544e_v10     PVR 80210021
-PowerPC mpc8533_v10      PVR 80210021
-PowerPC mpc8548e_v21     PVR 80210021
-PowerPC mpc8548e         (alias for mpc8548e_v21)
-PowerPC mpc8547e_v21     PVR 80210021
-PowerPC mpc8547e         (alias for mpc8547e_v21)
-PowerPC mpc8560_v21      PVR 80210021
-PowerPC mpc8560          (alias for mpc8560_v21)
-PowerPC e500v2_v21       PVR 80210021
-PowerPC mpc8533e_v10     PVR 80210021
-PowerPC mpc8545e_v21     PVR 80210021
-PowerPC mpc8545e         (alias for mpc8545e_v21)
-PowerPC mpc8533_v11      PVR 80210022
-PowerPC mpc8533          (alias for mpc8533_v11)
-PowerPC mpc8567e         PVR 80210022
-PowerPC e500v2_v22       PVR 80210022
+...
 PowerPC e500             (alias for e500v2_v22)
-PowerPC e500v2           (alias for e500v2_v22)
-PowerPC mpc8533e_v11     PVR 80210022
-PowerPC mpc8533e         (alias for mpc8533e_v11)
-PowerPC mpc8568e         PVR 80210022
-PowerPC mpc8568          PVR 80210022
-PowerPC mpc8567          PVR 80210022
-PowerPC mpc8544e_v11     PVR 80210022
-PowerPC mpc8544e         (alias for mpc8544e_v11)
-PowerPC mpc8544_v11      PVR 80210022
-PowerPC mpc8544          (alias for mpc8544_v11)
-PowerPC e500v2_v30       PVR 80210030
-PowerPC mpc8572e         PVR 80210030
-PowerPC mpc8572          PVR 80210030
-PowerPC e500mc           PVR 80230020
-PowerPC g2h4             PVR 80811010
-PowerPC g2hip4           PVR 80811014
-PowerPC mpc8241          (alias for g2hip4)
-PowerPC mpc8245          (alias for g2hip4)
-PowerPC mpc8250          (alias for g2hip4)
-PowerPC mpc8250_hip4     (alias for g2hip4)
-PowerPC mpc8255          (alias for g2hip4)
-PowerPC mpc8255_hip4     (alias for g2hip4)
-PowerPC mpc8260          (alias for g2hip4)
-PowerPC mpc8260_hip4     (alias for g2hip4)
-PowerPC mpc8264          (alias for g2hip4)
-PowerPC mpc8264_hip4     (alias for g2hip4)
-PowerPC mpc8265          (alias for g2hip4)
-PowerPC mpc8265_hip4     (alias for g2hip4)
-PowerPC mpc8266          (alias for g2hip4)
-PowerPC mpc8266_hip4     (alias for g2hip4)
-PowerPC g2le             PVR 80820010
-PowerPC g2gp             PVR 80821010
-PowerPC g2legp           PVR 80822010
-PowerPC mpc5200_v10      PVR 80822011
-PowerPC mpc5200_v12      PVR 80822011
-PowerPC mpc52xx          (alias for mpc5200_v12)
-PowerPC mpc5200          (alias for mpc5200_v12)
-PowerPC g2legp1          PVR 80822011
-PowerPC mpc5200_v11      PVR 80822011
-PowerPC mpc5200b_v21     PVR 80822011
-PowerPC mpc5200b         (alias for mpc5200b_v21)
-PowerPC mpc5200b_v20     PVR 80822011
-PowerPC g2legp3          PVR 80822013
-PowerPC mpc82xx          (alias for g2legp3)
-PowerPC powerquicc-ii    (alias for g2legp3)
-PowerPC mpc8247          (alias for g2legp3)
-PowerPC mpc8248          (alias for g2legp3)
-PowerPC mpc8270          (alias for g2legp3)
-PowerPC mpc8271          (alias for g2legp3)
-PowerPC mpc8272          (alias for g2legp3)
-PowerPC mpc8275          (alias for g2legp3)
-PowerPC mpc8280          (alias for g2legp3)
-PowerPC e200z5           PVR 81000000
-PowerPC e200z6           PVR 81120000
-PowerPC e200             (alias for e200z6)
-PowerPC g2ls             PVR 90810010
-PowerPC g2lels           PVR a0822010
+...
+{% endhighlight %}
+
+# 内存
+
+## Memory
+使用Gnome的GLib：
+> GLib provides the core application building blocks for libraries and
+applications written in C. It provides the core object system used in GNOME,
+the main loop implementation, and a large set of utility functions for
+strings and common data structures.
+
+## Memory Allocation
+[Memory Allocation](https://developer.gnome.org/glib/unstable/glib-Memory
+-Allocation.html) — general memory-handling
+{% highlight c linenos %}
+#include <glib.h>
+
+These functions provide support for allocating and freeing memory.
+
+If any call to allocate memory using functions g_new(), g_new0(), g_renew(),
+g_malloc(), g_malloc0(), g_malloc0_n(), g_realloc(), and g_realloc_n() fails,
+the application is terminated. This also means that there is no need to check
+if the call succeeded. On the other hand, g_try_...() family of functions
+returns NULL on failure that can be used as a check for unsuccessful memory
+allocation. The application is not terminated in this case.
+
+It's important to match g_malloc() (and wrappers such as g_new()) with
+g_free(), g_slice_alloc() (and wrappers such as g_slice_new()) with
+g_slice_free(), plain malloc() with free(), and (if you're using C++)
+new with delete and new[] with delete[]. Otherwise bad things can happen,
+since these allocators may use different memory pools (and new/delete call
+constructors and destructors).
+
+functions
+
+#define             g_new(struct_type, n_structs)
+
+Allocates n_structs elements of type struct_type . The returned pointer is
+cast to a pointer to the given type. If n_structs is 0 it returns NULL. Care
+is taken to avoid overflow when calculating the size of the allocated block.
+
+Since the returned pointer is already casted to the right type, it is
+normally unnecessary to cast it explicitly, and doing so might hide
+memory allocation errors.
+
+Parameters
+    struct_type the type of the elements to allocate
+    n_structs   the number of elements to allocate
+
+Returns
+    a pointer to the allocated memory, cast to a pointer to struct_type
+{% endhighlight %}
+
+
+## MemoryRegion
+{% highlight c linenos %}
+include/exec/memory.h
+
+struct MemoryRegion {
+    Object parent_obj;
+
+    /* All fields are private - violators will be prosecuted */
+
+    /* The following fields should fit in a cache line */
+    bool romd_mode;
+    bool ram;
+    bool subpage;
+    bool readonly; /* For RAM regions */
+    bool rom_device;
+    bool flush_coalesced_mmio;
+    bool global_locking;
+    uint8_t dirty_log_mask;
+    bool is_iommu;
+    RAMBlock *ram_block;
+    Object *owner;
+
+    const MemoryRegionOps *ops;
+    void *opaque;
+    MemoryRegion *container;
+    Int128 size;
+    hwaddr addr;
+    void (*destructor)(MemoryRegion *mr);
+    uint64_t align;
+    bool terminates;
+    bool ram_device;
+    bool enabled;
+    bool warning_printed; /* For reservations */
+    uint8_t vga_logging_count;
+    MemoryRegion *alias;
+    hwaddr alias_offset;
+    int32_t priority;
+    QTAILQ_HEAD(subregions, MemoryRegion) subregions;
+    QTAILQ_ENTRY(MemoryRegion) subregions_link;
+    QTAILQ_HEAD(coalesced_ranges, CoalescedMemoryRange) coalesced;
+    const char *name;
+    unsigned ioeventfd_nb;
+    MemoryRegionIoeventfd *ioeventfds;
+};
+{% endhighlight %}
+
+## RAMBlock
+{% highlight c linenos %}
+include/exec/ram_addr.h
+
+struct RAMBlock {
+    struct rcu_head rcu;
+    struct MemoryRegion *mr;
+    uint8_t *host;
+    ram_addr_t offset;
+    ram_addr_t used_length;
+    ram_addr_t max_length;
+    void (*resized)(const char*, uint64_t length, void *host);
+    uint32_t flags;
+    /* Protected by iothread lock.  */
+    char idstr[256];
+    /* RCU-enabled, writes protected by the ramlist lock */
+    QLIST_ENTRY(RAMBlock) next;
+    QLIST_HEAD(, RAMBlockNotifier) ramblock_notifiers;
+    int fd;
+    size_t page_size;
+    /* dirty bitmap used during migration */
+    unsigned long *bmap;
+    /* bitmap of pages that haven't been sent even once
+     * only maintained and used in postcopy at the moment
+     * where it's used to send the dirtymap at the start
+     * of the postcopy phase
+     */
+    unsigned long *unsentmap;
+    /* bitmap of already received pages in postcopy */
+    unsigned long *receivedmap;
+};
+{% endhighlight %}
+
+## get_system_memory()
+{% highlight c linenos %}
+exec.c
+
+MemoryRegion *get_system_memory(void)
+{
+    return system_memory;
+}
+{% endhighlight %}
+
+## memory_region_allocate_system_memory()
+头文件
+{% highlight c linenos %}
+include/hw/boards.h
+
+/**
+ * memory_region_allocate_system_memory - Allocate a board's main memory
+ * @mr: the #MemoryRegion to be initialized
+ * @owner: the object that tracks the region's reference count
+ * @name: name of the memory region
+ * @ram_size: size of the region in bytes
+ *
+ * This function allocates the main memory for a board model, and
+ * initializes @mr appropriately. It also arranges for the memory
+ * to be migrated (by calling vmstate_register_ram_global()).
+ *
+ * Memory allocated via this function will be backed with the memory
+ * backend the user provided using "-mem-path" or "-numa node,memdev=..."
+ * if appropriate; this is typically used to cause host huge pages to be
+ * used. This function should therefore be called by a board exactly once,
+ * for the primary or largest RAM area it implements.
+ *
+ * For boards where the major RAM is split into two parts in the memory
+ * map, you can deal with this by calling memory_region_allocate_system_memory()
+ * once to get a MemoryRegion with enough RAM for both parts, and then
+ * creating alias MemoryRegions via memory_region_init_alias() which
+ * alias into different parts of the RAM MemoryRegion and can be mapped
+ * into the memory map in the appropriate places.
+ *
+ * Smaller pieces of memory (display RAM, static RAMs, etc) don't need
+ * to be backed via the -mem-path memory backend and can simply
+ * be created via memory_region_allocate_aux_memory() or
+ * memory_region_init_ram().
+ */
+void memory_region_allocate_system_memory(MemoryRegion *mr, Object *owner,
+                                          const char *name,
+                                          uint64_t ram_size);
+{% endhighlight %}
+
+函数体
+{% highlight c linenos %}
+numa.c
+
+void memory_region_allocate_system_memory(MemoryRegion *mr, Object *owner,
+                                          const char *name,
+                                          uint64_t ram_size)
+{
+    uint64_t addr = 0;
+    int i;
+
+    if (nb_numa_nodes == 0 || !have_memdevs) {
+        allocate_system_memory_nonnuma(mr, owner, name, ram_size);
+        return;
+    }
+
+    memory_region_init(mr, owner, name, ram_size);
+    for (i = 0; i < nb_numa_nodes; i++) {
+        uint64_t size = numa_info[i].node_mem;
+        HostMemoryBackend *backend = numa_info[i].node_memdev;
+        if (!backend) {
+            continue;
+        }
+        MemoryRegion *seg = host_memory_backend_get_memory(backend,
+                                                           &error_fatal);
+
+        if (memory_region_is_mapped(seg)) {
+            char *path = object_get_canonical_path_component(OBJECT(backend));
+            error_report("memory backend %s is used multiple times. Each "
+                         "-numa option must use a different memdev value.",
+                         path);
+            exit(1);
+        }
+
+        host_memory_backend_set_mapped(backend, true);
+        memory_region_add_subregion(mr, addr, seg);
+        vmstate_register_ram_global(seg);
+        addr += size;
+    }
+}
 {% endhighlight %}
 
 {% highlight c linenos %}
