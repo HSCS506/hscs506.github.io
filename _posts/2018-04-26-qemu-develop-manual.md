@@ -377,6 +377,36 @@ void memory_region_allocate_system_memory(MemoryRegion *mr, Object *owner,
 {% highlight c linenos %}
 numa.c
 
+static void allocate_system_memory_nonnuma(MemoryRegion *mr, Object *owner,
+                                           const char *name,
+                                           uint64_t ram_size)
+{
+    if (mem_path) {
+#ifdef __linux__
+        Error *err = NULL;
+        memory_region_init_ram_from_file(mr, owner, name, ram_size, false,
+                                         mem_path, &err);
+        if (err) {
+            error_report_err(err);
+            if (mem_prealloc) {
+                exit(1);
+            }
+
+            /* Legacy behavior: if allocation failed, fall back to
+             * regular RAM allocation.
+             */
+            memory_region_init_ram_nomigrate(mr, owner, name, ram_size, &error_fatal);
+        }
+#else
+        fprintf(stderr, "-mem-path not supported on this host\n");
+        exit(1);
+#endif
+    } else {
+        memory_region_init_ram_nomigrate(mr, owner, name, ram_size, &error_fatal);
+    }
+    vmstate_register_ram_global(mr);
+}
+
 void memory_region_allocate_system_memory(MemoryRegion *mr, Object *owner,
                                           const char *name,
                                           uint64_t ram_size)
@@ -414,6 +444,123 @@ void memory_region_allocate_system_memory(MemoryRegion *mr, Object *owner,
     }
 }
 {% endhighlight %}
+
+{% highlight c linenos %}
+memory.c
+
+void memory_region_init_ram_nomigrate(MemoryRegion *mr,
+                                      Object *owner,
+                                      const char *name,
+                                      uint64_t size,
+                                      Error **errp)
+{
+    memory_region_init(mr, owner, name, size);
+    mr->ram = true;
+    mr->terminates = true;
+    mr->destructor = memory_region_destructor_ram;
+    mr->ram_block = qemu_ram_alloc(size, mr, errp);
+    mr->dirty_log_mask = tcg_enabled() ? (1 << DIRTY_MEMORY_CODE) : 0;
+}
+{% endhighlight %}
+
+{% highlight c linenos %}
+exec.c
+
+static
+RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
+                                  void (*resized)(const char*,
+                                                  uint64_t length,
+                                                  void *host),
+                                  void *host, bool resizeable,
+                                  MemoryRegion *mr, Error **errp)
+{
+    RAMBlock *new_block;
+    Error *local_err = NULL;
+
+    size = HOST_PAGE_ALIGN(size);
+    max_size = HOST_PAGE_ALIGN(max_size);
+    new_block = g_malloc0(sizeof(*new_block));
+    new_block->mr = mr;
+    new_block->resized = resized;
+    new_block->used_length = size;
+    new_block->max_length = max_size;
+    assert(max_size >= size);
+    new_block->fd = -1;
+    new_block->page_size = getpagesize();
+    new_block->host = host;
+    if (host) {
+        new_block->flags |= RAM_PREALLOC;
+    }
+    if (resizeable) {
+        new_block->flags |= RAM_RESIZEABLE;
+    }
+    ram_block_add(new_block, &local_err);
+    if (local_err) {
+        g_free(new_block);
+        error_propagate(errp, local_err);
+        return NULL;
+    }
+    return new_block;
+}
+
+RAMBlock *qemu_ram_alloc(ram_addr_t size, MemoryRegion *mr, Error **errp)
+{
+    return qemu_ram_alloc_internal(size, size, NULL, NULL, false, mr, errp);
+}
+{% endhighlight %}
+
+AddressSpace结构体
+{% highlight c linenos %}
+include/exec/memory.h
+
+/**
+ * AddressSpace: describes a mapping of addresses to #MemoryRegion objects
+ */
+struct AddressSpace {
+    /* All fields are private. */
+    struct rcu_head rcu;
+    char *name;
+    MemoryRegion *root;
+
+    /* Accessed via RCU.  */
+    struct FlatView *current_map;
+
+    int ioeventfd_nb;
+    struct MemoryRegionIoeventfd *ioeventfds;
+    QTAILQ_HEAD(memory_listeners_as, MemoryListener) listeners;
+    QTAILQ_ENTRY(AddressSpace) address_spaces_link;
+};
+{% endhighlight %}
+
+{% highlight c linenos %}
+memory.c
+
+void address_space_init(AddressSpace *as, MemoryRegion *root, const char *name)
+{
+    memory_region_ref(root);
+    as->root = root;
+    as->current_map = NULL;
+    as->ioeventfd_nb = 0;
+    as->ioeventfds = NULL;
+    QTAILQ_INIT(&as->listeners);
+    QTAILQ_INSERT_TAIL(&address_spaces, as, address_spaces_link);
+    as->name = g_strdup(name ? name : "anonymous");
+    address_space_update_topology(as);
+    address_space_update_ioeventfds(as);
+}
+{% endhighlight %}
+
+{% highlight c linenos %}
+memory.c
+
+static QTAILQ_HEAD(memory_listeners, MemoryListener) memory_listeners
+    = QTAILQ_HEAD_INITIALIZER(memory_listeners);
+
+static QTAILQ_HEAD(, AddressSpace) address_spaces
+    = QTAILQ_HEAD_INITIALIZER(address_spaces);
+{% endhighlight %}
+
+
 
 {% highlight c linenos %}
 {% endhighlight %}

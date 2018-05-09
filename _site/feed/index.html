@@ -7,7 +7,7 @@
     <title>maow</title>
     <link href="/feed/" rel="self" />
     <link href="http://hscs506.github.io/" />
-    <lastBuildDate>2018-04-27T14:16:37+08:00</lastBuildDate>
+    <lastBuildDate>2018-05-10T00:04:49+08:00</lastBuildDate>
     <webMaster>maow.cd@foxmail.com</webMaster>
     
     <item>
@@ -707,7 +707,67 @@ strings and common data structures.</p>
 35
 36
 37
-38</pre></td><td class="code"><pre><span class="n">numa</span><span class="p">.</span><span class="n">c</span>
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68</pre></td><td class="code"><pre><span class="n">numa</span><span class="p">.</span><span class="n">c</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="n">allocate_system_memory_nonnuma</span><span class="p">(</span><span class="n">MemoryRegion</span> <span class="o">*</span><span class="n">mr</span><span class="p">,</span> <span class="n">Object</span> <span class="o">*</span><span class="n">owner</span><span class="p">,</span>
+                                           <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span>
+                                           <span class="kt">uint64_t</span> <span class="n">ram_size</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">mem_path</span><span class="p">)</span> <span class="p">{</span>
+<span class="cp">#ifdef __linux__
+</span>        <span class="n">Error</span> <span class="o">*</span><span class="n">err</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="n">memory_region_init_ram_from_file</span><span class="p">(</span><span class="n">mr</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">ram_size</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span>
+                                         <span class="n">mem_path</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">err</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">error_report_err</span><span class="p">(</span><span class="n">err</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">mem_prealloc</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="cm">/* Legacy behavior: if allocation failed, fall back to
+             * regular RAM allocation.
+             */</span>
+            <span class="n">memory_region_init_ram_nomigrate</span><span class="p">(</span><span class="n">mr</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">ram_size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">error_fatal</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="cp">#else
+</span>        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"-mem-path not supported on this host</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="cp">#endif
+</span>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">memory_region_init_ram_nomigrate</span><span class="p">(</span><span class="n">mr</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">ram_size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">error_fatal</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">vmstate_register_ram_global</span><span class="p">(</span><span class="n">mr</span><span class="p">);</span>
+<span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">memory_region_allocate_system_memory</span><span class="p">(</span><span class="n">MemoryRegion</span> <span class="o">*</span><span class="n">mr</span><span class="p">,</span> <span class="n">Object</span> <span class="o">*</span><span class="n">owner</span><span class="p">,</span>
                                           <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span>
@@ -745,6 +805,211 @@ strings and common data structures.</p>
         <span class="n">addr</span> <span class="o">+=</span> <span class="n">size</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15</pre></td><td class="code"><pre><span class="n">memory</span><span class="p">.</span><span class="n">c</span>
+
+<span class="kt">void</span> <span class="n">memory_region_init_ram_nomigrate</span><span class="p">(</span><span class="n">MemoryRegion</span> <span class="o">*</span><span class="n">mr</span><span class="p">,</span>
+                                      <span class="n">Object</span> <span class="o">*</span><span class="n">owner</span><span class="p">,</span>
+                                      <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span>
+                                      <span class="kt">uint64_t</span> <span class="n">size</span><span class="p">,</span>
+                                      <span class="n">Error</span> <span class="o">**</span><span class="n">errp</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">memory_region_init</span><span class="p">(</span><span class="n">mr</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+    <span class="n">mr</span><span class="o">-&gt;</span><span class="n">ram</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">mr</span><span class="o">-&gt;</span><span class="n">terminates</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">mr</span><span class="o">-&gt;</span><span class="n">destructor</span> <span class="o">=</span> <span class="n">memory_region_destructor_ram</span><span class="p">;</span>
+    <span class="n">mr</span><span class="o">-&gt;</span><span class="n">ram_block</span> <span class="o">=</span> <span class="n">qemu_ram_alloc</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">mr</span><span class="p">,</span> <span class="n">errp</span><span class="p">);</span>
+    <span class="n">mr</span><span class="o">-&gt;</span><span class="n">dirty_log_mask</span> <span class="o">=</span> <span class="n">tcg_enabled</span><span class="p">()</span> <span class="o">?</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">DIRTY_MEMORY_CODE</span><span class="p">)</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43</pre></td><td class="code"><pre><span class="n">exec</span><span class="p">.</span><span class="n">c</span>
+
+<span class="k">static</span>
+<span class="n">RAMBlock</span> <span class="o">*</span><span class="n">qemu_ram_alloc_internal</span><span class="p">(</span><span class="n">ram_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">ram_addr_t</span> <span class="n">max_size</span><span class="p">,</span>
+                                  <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">resized</span><span class="p">)(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span>
+                                                  <span class="kt">uint64_t</span> <span class="n">length</span><span class="p">,</span>
+                                                  <span class="kt">void</span> <span class="o">*</span><span class="n">host</span><span class="p">),</span>
+                                  <span class="kt">void</span> <span class="o">*</span><span class="n">host</span><span class="p">,</span> <span class="n">bool</span> <span class="n">resizeable</span><span class="p">,</span>
+                                  <span class="n">MemoryRegion</span> <span class="o">*</span><span class="n">mr</span><span class="p">,</span> <span class="n">Error</span> <span class="o">**</span><span class="n">errp</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">RAMBlock</span> <span class="o">*</span><span class="n">new_block</span><span class="p">;</span>
+    <span class="n">Error</span> <span class="o">*</span><span class="n">local_err</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+
+    <span class="n">size</span> <span class="o">=</span> <span class="n">HOST_PAGE_ALIGN</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+    <span class="n">max_size</span> <span class="o">=</span> <span class="n">HOST_PAGE_ALIGN</span><span class="p">(</span><span class="n">max_size</span><span class="p">);</span>
+    <span class="n">new_block</span> <span class="o">=</span> <span class="n">g_malloc0</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">new_block</span><span class="p">));</span>
+    <span class="n">new_block</span><span class="o">-&gt;</span><span class="n">mr</span> <span class="o">=</span> <span class="n">mr</span><span class="p">;</span>
+    <span class="n">new_block</span><span class="o">-&gt;</span><span class="n">resized</span> <span class="o">=</span> <span class="n">resized</span><span class="p">;</span>
+    <span class="n">new_block</span><span class="o">-&gt;</span><span class="n">used_length</span> <span class="o">=</span> <span class="n">size</span><span class="p">;</span>
+    <span class="n">new_block</span><span class="o">-&gt;</span><span class="n">max_length</span> <span class="o">=</span> <span class="n">max_size</span><span class="p">;</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">max_size</span> <span class="o">&gt;=</span> <span class="n">size</span><span class="p">);</span>
+    <span class="n">new_block</span><span class="o">-&gt;</span><span class="n">fd</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">new_block</span><span class="o">-&gt;</span><span class="n">page_size</span> <span class="o">=</span> <span class="n">getpagesize</span><span class="p">();</span>
+    <span class="n">new_block</span><span class="o">-&gt;</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">host</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">new_block</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">|=</span> <span class="n">RAM_PREALLOC</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">resizeable</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">new_block</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">|=</span> <span class="n">RAM_RESIZEABLE</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">ram_block_add</span><span class="p">(</span><span class="n">new_block</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">local_err</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">local_err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">g_free</span><span class="p">(</span><span class="n">new_block</span><span class="p">);</span>
+        <span class="n">error_propagate</span><span class="p">(</span><span class="n">errp</span><span class="p">,</span> <span class="n">local_err</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">new_block</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">RAMBlock</span> <span class="o">*</span><span class="n">qemu_ram_alloc</span><span class="p">(</span><span class="n">ram_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">MemoryRegion</span> <span class="o">*</span><span class="n">mr</span><span class="p">,</span> <span class="n">Error</span> <span class="o">**</span><span class="n">errp</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qemu_ram_alloc_internal</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="n">mr</span><span class="p">,</span> <span class="n">errp</span><span class="p">);</span>
+<span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>AddressSpace结构体</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></td><td class="code"><pre><span class="n">include</span><span class="o">/</span><span class="n">exec</span><span class="o">/</span><span class="n">memory</span><span class="p">.</span><span class="n">h</span>
+
+<span class="cm">/**
+ * AddressSpace: describes a mapping of addresses to #MemoryRegion objects
+ */</span>
+<span class="k">struct</span> <span class="n">AddressSpace</span> <span class="p">{</span>
+    <span class="cm">/* All fields are private. */</span>
+    <span class="k">struct</span> <span class="n">rcu_head</span> <span class="n">rcu</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+    <span class="n">MemoryRegion</span> <span class="o">*</span><span class="n">root</span><span class="p">;</span>
+
+    <span class="cm">/* Accessed via RCU.  */</span>
+    <span class="k">struct</span> <span class="n">FlatView</span> <span class="o">*</span><span class="n">current_map</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">ioeventfd_nb</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">MemoryRegionIoeventfd</span> <span class="o">*</span><span class="n">ioeventfds</span><span class="p">;</span>
+    <span class="n">QTAILQ_HEAD</span><span class="p">(</span><span class="n">memory_listeners_as</span><span class="p">,</span> <span class="n">MemoryListener</span><span class="p">)</span> <span class="n">listeners</span><span class="p">;</span>
+    <span class="n">QTAILQ_ENTRY</span><span class="p">(</span><span class="n">AddressSpace</span><span class="p">)</span> <span class="n">address_spaces_link</span><span class="p">;</span>
+<span class="p">};</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15</pre></td><td class="code"><pre><span class="n">memory</span><span class="p">.</span><span class="n">c</span>
+
+<span class="kt">void</span> <span class="n">address_space_init</span><span class="p">(</span><span class="n">AddressSpace</span> <span class="o">*</span><span class="n">as</span><span class="p">,</span> <span class="n">MemoryRegion</span> <span class="o">*</span><span class="n">root</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">memory_region_ref</span><span class="p">(</span><span class="n">root</span><span class="p">);</span>
+    <span class="n">as</span><span class="o">-&gt;</span><span class="n">root</span> <span class="o">=</span> <span class="n">root</span><span class="p">;</span>
+    <span class="n">as</span><span class="o">-&gt;</span><span class="n">current_map</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">as</span><span class="o">-&gt;</span><span class="n">ioeventfd_nb</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">as</span><span class="o">-&gt;</span><span class="n">ioeventfds</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">QTAILQ_INIT</span><span class="p">(</span><span class="o">&amp;</span><span class="n">as</span><span class="o">-&gt;</span><span class="n">listeners</span><span class="p">);</span>
+    <span class="n">QTAILQ_INSERT_TAIL</span><span class="p">(</span><span class="o">&amp;</span><span class="n">address_spaces</span><span class="p">,</span> <span class="n">as</span><span class="p">,</span> <span class="n">address_spaces_link</span><span class="p">);</span>
+    <span class="n">as</span><span class="o">-&gt;</span><span class="n">name</span> <span class="o">=</span> <span class="n">g_strdup</span><span class="p">(</span><span class="n">name</span> <span class="o">?</span> <span class="n">name</span> <span class="o">:</span> <span class="s">"anonymous"</span><span class="p">);</span>
+    <span class="n">address_space_update_topology</span><span class="p">(</span><span class="n">as</span><span class="p">);</span>
+    <span class="n">address_space_update_ioeventfds</span><span class="p">(</span><span class="n">as</span><span class="p">);</span>
+<span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7</pre></td><td class="code"><pre><span class="n">memory</span><span class="p">.</span><span class="n">c</span>
+
+<span class="k">static</span> <span class="n">QTAILQ_HEAD</span><span class="p">(</span><span class="n">memory_listeners</span><span class="p">,</span> <span class="n">MemoryListener</span><span class="p">)</span> <span class="n">memory_listeners</span>
+    <span class="o">=</span> <span class="n">QTAILQ_HEAD_INITIALIZER</span><span class="p">(</span><span class="n">memory_listeners</span><span class="p">);</span>
+
+<span class="k">static</span> <span class="n">QTAILQ_HEAD</span><span class="p">(,</span> <span class="n">AddressSpace</span><span class="p">)</span> <span class="n">address_spaces</span>
+    <span class="o">=</span> <span class="n">QTAILQ_HEAD_INITIALIZER</span><span class="p">(</span><span class="n">address_spaces</span><span class="p">);</span><span class="w">
 </span></pre></td></tr></tbody></table></code></pre></figure>
 
 ]]></content:encoded>
